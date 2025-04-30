@@ -1,0 +1,41 @@
+# Node modules
+node_modules/
+
+# Build output
+build/
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# dotenv environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Mac system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# Optional: image cache from dev server or local storage emulation
+.cache/

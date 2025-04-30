@@ -1,0 +1,24 @@
+{
+  "name": "contacts-backend",
+  "version": "1.0.0",
+  "description": "backend API for the cotnacts React app",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts build"
+  },
+  "author": "Krisztian Karolyi",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.2",
+    "path": "^0.12.7",
+    "pg": "^8.15.6"
+  }
+}
