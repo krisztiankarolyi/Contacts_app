@@ -8,6 +8,8 @@ function ContactsPage({ token }) {
   const [editingContact, setEditingContact] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [searchTerm, setSearchTerm] = useState(""); // 1. Add search term state
+  const apiUrl = process.env.REACT_APP_API_URL;
+
 
   useEffect(() => {
     fetchContacts();
@@ -15,7 +17,7 @@ function ContactsPage({ token }) {
 
   const fetchContacts = () => {
     axios
-      .get("http://localhost:8080/contacts", {
+      .get(apiUrl+"/contacts", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -32,7 +34,7 @@ function ContactsPage({ token }) {
     if (!window.confirm("Biztosan törölni szeretnéd ezt a kontaktot?")) return;
 
     axios
-      .delete(`http://localhost:8080/contacts/${id}`, {
+      .delete(`${apiUrl}/contacts/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -61,7 +63,7 @@ function ContactsPage({ token }) {
     formData.append("address", editingContact.address || "");
 
     axios
-      .put(`http://localhost:8080/contacts/${editingContact.id}`, formData, {
+      .put(apiUrl+`/contacts/${editingContact.id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -175,7 +177,7 @@ function ContactsPage({ token }) {
             <Contact
               id={contact.id}
               name={contact.name}
-              photo={`http://localhost:8080/${contact.avatarURL}`}
+              photo={`${apiUrl}/${contact.avatarURL}`}
               mobile={contact.mobile}
               email={contact.email}
               address={contact.address || "No address provided"}

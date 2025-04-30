@@ -2,6 +2,9 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import env from "react-dotenv";
+
+
 
 function Login({ setToken }) {
   const [username, setUserName] = useState('');
@@ -34,7 +37,9 @@ function Login({ setToken }) {
   };
 
   async function loginUser(credentials) {
-    const response = await fetch('http://localhost:8080/login', {
+    const apiUrl = process.env.REACT_APP_API_URL;
+
+    const response = await fetch(apiUrl+'/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

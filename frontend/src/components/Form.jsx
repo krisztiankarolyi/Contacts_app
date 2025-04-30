@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
+
 function Form({ token }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -15,7 +18,7 @@ function Form({ token }) {
 
   const saveCB = async (formData) => {
     try {
-      await axios.post("http://localhost:8080/contacts", formData, {
+      await axios.post(apiUrl+"/contacts", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           "Authorization": `Bearer ${token}`,

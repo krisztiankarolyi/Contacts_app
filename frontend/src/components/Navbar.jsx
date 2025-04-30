@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 export default function AppNavbar({ username, token }) {
   return (
     <Navbar bg="primary" expand="lg" variant="dark" className="mb-4 navbar sticky-top ">
@@ -31,7 +33,7 @@ export default function AppNavbar({ username, token }) {
                   <span>
                     Welcome, {username}{' '}
                     <img
-                      src={`http://localhost:8080/uploads/default.jpg`}
+                     src={`${apiUrl}/uploads/default.jpg`}
                       alt={username}
                       className="rounded-circle ms-1 avatar"
                       style={{ width: '50px', height: '50px' }}

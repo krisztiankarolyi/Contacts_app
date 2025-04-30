@@ -37,7 +37,6 @@ function App() {
         {token && (
           <>
             <Route path="/newContact" element={<Form token={token} />} />
-            <Route path="/contact" element={<Contact />} />
             <Route path="/preferences" element={<Preferences />} />
             <Route path="/logout" element={<Logout setToken={setToken} />} />
             <Route path="/contacts" element={<ContactsPage token={token} />} />
