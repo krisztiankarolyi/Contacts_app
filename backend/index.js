@@ -25,14 +25,10 @@ const pool = new pg.Pool({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-  origin: 'https://contacts-app-frontend-j8kd.onrender.com',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-}));
+app.use(cors());
 app.use('/uploads', cors(), express.static('uploads'));
 app.use('/avatars', cors(),  express.static('uploads'));
+app.set('trust proxy', true)
 
 
 
