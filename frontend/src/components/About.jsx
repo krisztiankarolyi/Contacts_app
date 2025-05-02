@@ -11,6 +11,7 @@ export default function About(){
                 <ul>
                     <li><strong>Flexible data management:</strong> The app allows for easy addition, modification, and deletion of contact information.</li>
                     <li><strong>Profile picture support:</strong> You can personalize each contact with a unique profile picture, uploaded from your own avatar, making it easier to identify contacts.</li>
+                    <li><strong>Export options:</strong> You can download the saved contacts as JSON or vCards.</li>
                     <li><strong>Dynamic interactions:</strong> The easy-to-use interface and quick data updates ensure a smooth and responsive user experience.</li>
                 </ul>
 
@@ -27,6 +28,12 @@ export default function About(){
                     <li><strong>Database:</strong> PostgreSQL</li>
                     <li><strong>File Management:</strong> Multer (secure file storage and handling)</li>
                     <li><strong>Authentication:</strong> JWT (JSON Web Token) security</li>
+                </ul>
+
+                <h4>🔧 <strong>Next steps: (further development)</strong></h4>
+                <ul>
+                    <li><strong>Multiple contacts management: </strong>Download or delete more cotnacts at a time</li>           
+                    <li><strong>Import options:</strong>Import contacts from JSON </li>
                 </ul>
             </div>
         </>

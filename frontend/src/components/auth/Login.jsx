@@ -25,29 +25,71 @@ function Login({ setToken }) {
 
     try {
       const tokenData = await loginUser({ username, password });
+    
+      console.log('loginUser response:', tokenData); // <-- válasz naplózása
+    
       if (tokenData?.error) {
-        setError(tokenData.error);
+        setError(`Szerver hiba: ${tokenData.error}`);
       } else {
         setToken(tokenData.token, tokenData.username); 
         navigate('/contacts'); 
       }
-    } catch {
-      setError('Hiba történt a bejelentkezés során.');
+    } catch (err) {
+      console.error('Hiba történt a bejelentkezés során:', err);
+    
+      // Kibővített hibakezelés
+      let message = 'Hiba történt a bejelentkezés során.';
+      if (err instanceof Error) {
+        message += ` Részletek: ${err.message}`;
+      }
+      
+      // Ha a hiba egy HTTP válasz (pl. fetch sikertelen válasz), az is kiolvasható
+      if (err?.response) {
+        message += `\nHTTP státusz: ${err.response.status}`;
+        message += `\nVálasz: ${JSON.stringify(await err.response.json(), null, 2)}`;
+      }
+    
+      setError(message);
     }
   };
-
   async function loginUser(credentials) {
     const apiUrl = process.env.REACT_APP_API_URL;
-
-    const response = await fetch(apiUrl+'/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(credentials)
-    });
-    return await response.json();
+  
+    try {
+      const response = await fetch(`${apiUrl}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credentials)
+      });
+  
+      const responseBody = await response.text(); // Először szövegként olvasd ki, hogy bármilyen válasz olvasható legyen (pl. HTML error page)
+      let data;
+  
+      try {
+        data = JSON.parse(responseBody); // Próbáld JSON-ként értelmezni
+      } catch (jsonError) {
+        alert(jsonError);
+        alert(responseBody);
+        console.warn('Nem JSON válasz:', responseBody);
+        throw new Error(`Nem JSON válasz: ${responseBody}`);
+      }
+  
+      if (!response.ok) {
+        // Pl. 401 Unauthorized, 500 Internal Server Error, stb.
+        throw new Error(`Hibás státuszkód: ${response.status} - ${data.error || response.statusText}`);
+      }
+  
+      console.log('Sikeres válasz:', data);
+      return data;
+    } catch (error) {
+      console.error('loginUser hiba:', error);
+      alert(error)
+      throw error; // Fontos, hogy ezt továbbdobd a hívó oldalra
+    }
   }
+  
 
   return (
     <div className="d-flex align-items-center justify-content-center vh-100 bg-light">

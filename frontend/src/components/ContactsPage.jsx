@@ -50,6 +50,7 @@ function ContactsPage({ token }) {
       })
       .catch((err) => console.error("Delete error:", err));
   };
+  
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -84,6 +85,82 @@ function ContactsPage({ token }) {
     const { name, value } = e.target;
     setEditingContact((prev) => ({ ...prev, [name]: value }));
   };
+
+
+  const downloadJson = async (id) => {
+    const contact = contacts.find((c) => c.id === id);
+    if (!contact) return;
+  
+      const photoUrl = `${apiUrl}/${contact.avatarurl.replace(/\\/g, "/")}`;
+      contact.avatarurl = photoUrl;
+      const jsonStr = JSON.stringify(contact, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${contact.name.replace(/\s+/g, "_")}.json`;
+      link.click();
+  };
+
+  const downloadVcard = async (id) => {
+    const contact = contacts.find((c) => c.id === id);
+    if (!contact) return;
+  
+    let photoBase64 = '';
+    let photoMimeType = '';
+  
+    if (contact.avatarurl) {
+      const photoUrl = `${apiUrl}/${contact.avatarurl.replace(/\\/g, '/')}`;
+      const response = await fetch(photoUrl);
+      const blob = await response.blob();
+      photoMimeType = blob.type.split('/')[1].toUpperCase();
+  
+      const base64 = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.readAsDataURL(blob);
+      });
+  
+      photoBase64 = base64;
+    }
+  
+    const lines = [
+      'BEGIN:VCARD',
+      'VERSION:3.0',
+      `FN:${contact.name}`,
+      `TEL;TYPE=CELL:${contact.mobile}`,
+      `EMAIL:${contact.email}`,
+      `ADR:${contact.address || ''}`,
+    ];
+  
+    if (photoBase64) {
+      const photoLine = `PHOTO;ENCODING=b;TYPE=${photoMimeType}:${photoBase64}`;
+      lines.push(...foldLine(photoLine).split('\r\n'));
+    }
+  
+    lines.push('END:VCARD');
+  
+    const vcard = lines.join('\r\n');
+  
+    const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${contact.name.replace(/\s+/g, '_')}.vcf`;
+    link.click();
+  };
+
+  function foldLine(line) {
+    const maxLength = 75;
+    if (line.length <= maxLength) return line;
+  
+    let result = '';
+    while (line.length > maxLength) {
+      result += line.slice(0, maxLength) + '\r\n ';
+      line = line.slice(maxLength);
+    }
+    result += line;
+    return result;
+  }
+
 
   // 2. Filter the contacts based on searchTerm
   const filteredContacts = contacts.filter((contact) => {
@@ -160,7 +237,7 @@ function ContactsPage({ token }) {
       )}
 
       {/* 3. Search input field */}
-      <div className="mb-4">
+      <div className="mb-4 fixed">
         <input
           type="text"
           className="form-control"
@@ -177,11 +254,13 @@ function ContactsPage({ token }) {
             <Contact
               id={contact.id}
               name={contact.name}
-              photo={`${apiUrl}/${contact.avatarURL}`}
+              photo={`${apiUrl}/${contact.avatarurl}`}
               mobile={contact.mobile}
               email={contact.email}
               address={contact.address || "No address provided"}
               onDelete={handleDelete}
+              onDownloadJson={downloadJson}
+              onDownloadVcard={downloadVcard}
               onEdit={() => setEditingContact(contact)}
             />
           </div>

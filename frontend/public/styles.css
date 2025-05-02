@@ -11,20 +11,16 @@ body{
   grid-template-columns: repeat(1, 1fr); 
   gap: 1rem;
   margin-top: 2rem;
+  z-index: 20;
 }
+
 
 @media (min-width: 768px) {
   .contacts-grid {
     grid-template-columns: repeat(4, 1fr);
   }
+  
 }
-
-.contact-card:hover{
-  background-color: #61dafb;
-  cursor: pointer;
-}
-
-
 
 .App {
   text-align: center;

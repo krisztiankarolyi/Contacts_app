@@ -40,6 +40,7 @@ function App() {
             <Route path="/preferences" element={<Preferences />} />
             <Route path="/logout" element={<Logout setToken={setToken} />} />
             <Route path="/contacts" element={<ContactsPage token={token} />} />
+            <Route path="/profile" element={<><h1>Coming soon...</h1></>} />
           </>
         )}
 
@@ -51,6 +52,7 @@ function App() {
             <Route path="/preferences" element={<Login setToken={saveToken} />} />
             <Route path="/logout" element={<Login setToken={saveToken} />} />
             <Route path="/contacts" element={<Login setToken={saveToken} />} />
+            <Route path="/profile" element={<Login setToken={saveToken} />} />
           </>
         )}
       </Routes>
